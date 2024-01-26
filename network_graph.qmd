@@ -52,7 +52,15 @@ g <- make_graph(~ Database+"Sierra Nevada":Panama:Brazil:Pennsylvania:Genetics:
                   Modeling:Mucosome:Database,
                 
                 Mucosome+ "Sierra Nevada":Panama:Brazil:Pennsylvania:Database) %>% 
-  reverse_edges()
+  reverse_edges() %>% 
+  set_vertex_attr("rank", value = c(2, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 4, 4, 3))
+
+
+
+
+Database+"Sierra Nevada":Panama:Brazil:Pennsylvania:Genetics:
+                  "Ecophysiology & Environmental Data":eDNA:AMPs:Microbiome:"Occupancy & Abundance":Outreach:
+                  Modeling:Mucosome
 
 
 layout.by.attr <- function(graph, wc, cluster.strength=1,layout=layout.auto) {  
@@ -66,19 +74,37 @@ layout.by.attr <- function(graph, wc, cluster.strength=1,layout=layout.auto) {
   return(l)
 }
 
-
+layout.by.attr(g, wc=5)
+layout <- layout_with_kk(g)
 
 plot.igraph(g, 
-            layout = layout.by.attr(g, wc=5), 
+            layout = g$rank , 
             main = "RIBBiTR Network",
             edge.arrow.size = 0.3,
             vertex.label.cex = 0.7, 
-            vertex.shape="none",
-            edge.curved = T)
+            #vertex.shape="none",
+            edge.curved = T,
+            vertex.color=as.factor(V(g)$rank))
 
 
 degree(g)
+g
 
 get.adjacency(g)
+
+
+```
+
+```{r}
+
+g <- make_graph(~ Alice-Bob:Claire:Frank, Claire-Alice:Dennis:Frank:Esther,
+                George-Dennis:Frank, Dennis-Esther) %>%
+  set_vertex_attr("age", value = c(25, 31, 18, 23, 47, 22, 50)) %>%
+  set_vertex_attr("gender", value = c("f", "m", "f", "m", "m", "f", "m")) %>%
+  set_edge_attr("is_formal", value = c(FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE))
+
+men <- V(g)[age == 25]$name
+
+plot(g)
 ```
 
