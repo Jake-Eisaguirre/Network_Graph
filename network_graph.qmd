@@ -78,13 +78,15 @@ layout.by.attr(g, wc=5)
 layout <- layout_with_kk(g)
 
 plot.igraph(g, 
-            layout = g$rank , 
+            layout = layout_with_sugiyama(g, layers = V(g)$rank, hgap = 10, vgap = 10), 
             main = "RIBBiTR Network",
             edge.arrow.size = 0.3,
             vertex.label.cex = 0.7, 
             #vertex.shape="none",
             edge.curved = T,
             vertex.color=as.factor(V(g)$rank))
+
+tkplot(g)
 
 
 degree(g)
