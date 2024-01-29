@@ -70,13 +70,31 @@ t <- make_graph(~ Database+-"Sierra Nevada":Panama:Brazil:Pennsylvania,
   
 
 
-layout <-layout_nicely(t)
+LO <- layout_nicely(t)
+
+#Rank 1
+TopRow <- which(LO$layout[,2] == 4)
+LO$layout[TopRow,1] <- seq(1,100, length.out=length(TopRow))
+
+# Database node
+LO$layout[1,1] <- 40
+
+# Rank 3
+Row2 <- which(LO$layout[,2] == 2)
+
+LO$layout[Row2,1] <- seq(5,95, length.out=length(Row2))
+LO$layout[Row2,2] <- rep(c(2.3,1.8), length.out=6)
+
+
+# Rank 4
+BottomRow <- which(LO$layout[,2] == 1)
+LO$layout[BottomRow,1] <- seq(1,100, length.out=length(BottomRow))
 
 node.size= c(10,10,10, 10, 10,10,10, 10, 10,10,10, 10, 10,10)
 
 
 plot(t, 
-     layout =layout,
+     layout =LO,
      main = "RIBBiTR Network",
      edge.arrow.size = 0.3,
      vertex.label.cex = 0.7, 
@@ -85,10 +103,7 @@ plot(t,
      vertex.color=as.factor(V(t)$rank),
      edge.width = 1.1,
      vertex.color = "black",
-     vertex.size=node.size*0.9) 
-
-
-+
+     vertex.size=node.size*2) +
 
 legend("bottomright",
        legend = c("Primary Data", "Secondary Data", "Tertiary Data", "Quaternary Data"),
